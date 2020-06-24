@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Класс AsyncForm управляет всеми формами
  * приложения, которые не должны быть отправлены с
@@ -12,8 +13,12 @@ class AsyncForm {
    * Сохраняет переданный элемент и регистрирует события
    * через registerEvents()
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (!element) {
+      throw new Error("Ошибка! Элемент не существует!");
+    }
+    this.element = element;
+    this.registerEvents();
   }
 
   /**
@@ -21,7 +26,10 @@ class AsyncForm {
    * вызывает метод submit()
    * */
   registerEvents() {
-
+    this.element.addEventListener("submit", event => {
+      event.preventDefault();
+      this.submit();
+    })
   }
 
   /**
@@ -32,10 +40,19 @@ class AsyncForm {
    * }
    * */
   getData() {
+    let formData = new FormData(this.element),
+      entries = formData.entries(),
+      objFormData = {};
 
+    for (let item of entries) {
+      const key = item[0],
+        value = item[1];
+      objFormData[key] = value;
+    }
+    return objFormData;
   }
 
-  onSubmit( options ) {
+  onSubmit(options) {
 
   }
 
@@ -44,6 +61,7 @@ class AsyncForm {
    * данные, полученные из метода getData()
    * */
   submit() {
-
+    let data = getData();
+    this.onSubmit({ data });
   }
 }
