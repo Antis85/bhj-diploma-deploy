@@ -29,7 +29,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    return JSON.parse(localStorage.getItem("user")) || undefined;
+    return JSON.parse(localStorage.getItem("user"));
   }
 
   /**
