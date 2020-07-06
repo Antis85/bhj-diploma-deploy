@@ -44,7 +44,7 @@ class Entity {
     return createRequest({
       method: "POST",
       url: this.URL + "/" + id,
-      data: modifiedData,
+      data,
       responseType: "json",
       callback
     });
