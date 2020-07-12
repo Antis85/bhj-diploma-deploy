@@ -15,6 +15,7 @@ class TransactionsPage {
     if (!element) {
       throw new Error("Ошибка! Элемент не существует!");
     }
+
     this.element = element;
     this.registerEvents();
   }
@@ -33,13 +34,15 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-    document.addEventListener("click", event => {
+    this.element.addEventListener("click", event => {
       event.preventDefault();
       const buttonRemoveAccount = event.target.closest(".remove-account");
       const buttonRemoveTransaction = event.target.closest(".transaction__remove");
+
       if (buttonRemoveAccount) {
         this.removeAccount();
       }
+
       if (buttonRemoveTransaction) {
         const id = buttonRemoveTransaction.dataset.id;
         this.removeTransaction(id);
@@ -92,9 +95,11 @@ class TransactionsPage {
   render(options) {
     if (options) {
       this.lastOptions = options;
+
       Account.get(options.account_id, {}, (err, response) => {
         this.renderTitle(response.data.name);
       });
+
       Transaction.list(options, (err, response) => {
         if (response && response.success) {
           this.renderTransactions(response.data);
@@ -118,7 +123,7 @@ class TransactionsPage {
    * Устанавливает заголовок в элемент .content-title
    * */
   renderTitle(name) {
-    const contentTitle = document.querySelector(".content-title");
+    const contentTitle = this.element.querySelector(".content-title");
     contentTitle.textContent = name;
   }
 
@@ -134,12 +139,13 @@ class TransactionsPage {
       month: "long",
       day: "numeric"
     });
-    const dateTime = date.toLocaleTimeString("ru", {
+
+    const dateTime = dateToFormat.toLocaleTimeString("ru", {
       hour: "numeric",
       minute: "numeric"
     });
 
-    return `${formatterDate.format(date)} в ${dateTime}`;
+    return `${formatterDate.format(dateToFormat)} в ${dateTime}`;
   }
 
   /**
@@ -175,9 +181,10 @@ class TransactionsPage {
    * используя getTransactionHTML
    * */
   renderTransactions(data) {
+    this.element.querySelector(".content").innerHTML = "";
     if (data.length) {
       data.forEach(item => {
-        document.querySelector(".content").insertAdjacentHTML("beforeend", this.getTransactionHTML(item));
+        this.element.querySelector(".content").insertAdjacentHTML("beforeend", this.getTransactionHTML(item));
       })
     }
   }
