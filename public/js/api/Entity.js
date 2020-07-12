@@ -1,4 +1,5 @@
 "use strict";
+
 /**
  * Класс Entity - базовый для взаимодействия с сервером.
  * Имеет свойство URL, равно пустой строке.
@@ -42,7 +43,7 @@ class Entity {
    * */
   static get(id = "", data, callback = f => f) {
     return createRequest({
-      method: "POST",
+      method: "GET",
       url: this.URL + "/" + id,
       data,
       responseType: "json",
@@ -55,10 +56,10 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static remove(id = "", data, callback = f => f) {
-    let modifiedData = Object.assign(data, { _method: "DELETE" }, id);
+    let modifiedData = Object.assign(data, { _method: "DELETE" }, { id });
     return createRequest({
       method: "POST",
-      url: this.URL + "/" + id,
+      url: this.URL,
       data: modifiedData,
       responseType: "json",
       callback
