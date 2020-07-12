@@ -40,7 +40,7 @@ class User {
     return createRequest({
       data,
       method: "GET",
-      url: this.URL + "current",
+      url: this.URL + "/current",
       responseType: "json",
       // задаём функцию обратного вызова
       callback: (err, response) => {
@@ -65,7 +65,7 @@ class User {
     return createRequest({
       data,
       method: "POST",
-      url: this.URL + "login",
+      url: this.URL + "/login",
       responseType: "json",
       callback: (err, response) => {
         if (response && response.user) {
@@ -86,7 +86,7 @@ class User {
     return createRequest({
       data,
       method: "POST",
-      url: this.URL + "register",
+      url: this.URL + "/register",
       responseType: "json",
       callback: (err, response) => {
         if (response && response.user) {
@@ -105,7 +105,7 @@ class User {
     return createRequest({
       data,
       method: "POST",
-      url: this.URL + "logout",
+      url: this.URL + "/logout",
       responseType: "json",
       callback: (err, response) => {
         if (response && response.user) {
