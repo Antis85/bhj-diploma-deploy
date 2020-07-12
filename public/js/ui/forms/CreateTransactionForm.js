@@ -1,4 +1,5 @@
 "use strict";
+
 /**
  * Класс CreateTransactionForm управляет формой
  * создания новой транзакции
@@ -19,9 +20,9 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
-    const accountsSelect = document.querySelector(".accounts-select");
+    const accountsSelect = this.element.querySelector(".accounts-select");
     Account.list(User.current(), (err, response) => {
-      if (response && response.data); {        
+      if (response && response.data) {
         accountsSelect.innerHTML = "";
         response.data.forEach(item => {
           accountsSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
@@ -39,12 +40,15 @@ class CreateTransactionForm extends AsyncForm {
   onSubmit(options) {
     Transaction.create(options.data, (err, response) => {
       if (response && response.success) {
-        const transactionForm = document.querySelector(".modal");
-        if (transactionForm.getAttribute("id") == "modal-new-income") {
-          App.getModal("newIncome").close();
-        } else if (transactionForm.getAttribute("id") == "modal-new-expense") {
-          App.getModal("newExpense").close();
-        }
+        const transactionForm = document.querySelectorAll(".modal");
+        transactionForm.forEach(form => {
+          if (form.getAttribute("id") == "modal-new-income") {
+            App.getModal("newIncome").close();
+          } else if (form.getAttribute("id") == "modal-new-expense") {
+            App.getModal("newExpense").close();
+          }
+        });
+
         App.update();
         this.element.reset();
       }
